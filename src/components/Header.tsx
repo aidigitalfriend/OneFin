@@ -1,11 +1,7 @@
 import React, { useState } from 'react';
 import { Layers, Menu, X } from 'lucide-react';
 
-interface HeaderProps {
-  onOpenDeployGuide?: () => void;
-}
-
-export const Header: React.FC<HeaderProps> = ({ onOpenDeployGuide }) => {
+export const Header: React.FC = () => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   const navLinks = [
@@ -68,18 +64,6 @@ export const Header: React.FC<HeaderProps> = ({ onOpenDeployGuide }) => {
               {link.label}
             </a>
           ))}
-          {onOpenDeployGuide && (
-            <button
-              onClick={() => {
-                setMobileMenuOpen(false);
-                onOpenDeployGuide();
-              }}
-              className="w-full text-left px-3 py-2.5 rounded-lg text-xs font-mono text-slate-400 hover:text-sky-300 hover:bg-slate-900 transition-colors flex items-center justify-between"
-            >
-              <span>DNS &amp; Deployment Guide</span>
-              <span className="text-sky-400">&rarr;</span>
-            </button>
-          )}
         </div>
       )}
     </header>

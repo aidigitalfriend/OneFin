@@ -6,13 +6,11 @@ import { SecuritySection } from './components/SecuritySection.tsx';
 import { FaqSection } from './components/FaqSection.tsx';
 import { ContactSection } from './components/ContactSection.tsx';
 import { Footer } from './components/Footer.tsx';
-import { DeploymentGuideModal } from './components/DeploymentGuideModal.tsx';
 import { Check } from 'lucide-react';
 
 export default function App() {
   const [copiedUrl, setCopiedUrl] = useState<string | null>(null);
   const [toastMessage, setToastMessage] = useState<string | null>(null);
-  const [isDeployGuideOpen, setIsDeployGuideOpen] = useState(false);
 
   const handleCopyLink = (url: string, name: string) => {
     navigator.clipboard.writeText(url).then(() => {
@@ -34,22 +32,17 @@ export default function App() {
 
   return (
     <div className="min-h-screen flex flex-col bg-slate-950 text-slate-100 font-sans selection:bg-sky-500 selection:text-white overflow-x-hidden w-full">
-      {/* Top Banner indicating custom domain & GitHub Pages readiness */}
+      {/* Top Banner indicating official domain */}
       <div className="bg-slate-900 border-b border-slate-800 text-xs py-2 px-4 text-center text-slate-300">
         <span className="font-semibold text-white">OneFin Solution Hub</span>
         <span className="mx-2 text-slate-600">·</span>
-        <span>Custom Domain: <strong className="text-sky-400 font-mono">onefinsolution.xyz</strong></span>
-        <span className="mx-2 text-slate-600 hidden sm:inline">·</span>
-        <button
-          onClick={() => setIsDeployGuideOpen(true)}
-          className="text-sky-400 hover:text-sky-300 underline font-medium ml-1 transition-colors"
-        >
-          View DNS &amp; GitHub Pages Guide
-        </button>
+        <span>Official Client Payment &amp; Billing Directory</span>
+        <span className="mx-2 text-slate-600">·</span>
+        <span className="text-sky-400 font-mono">onefinsolution.xyz</span>
       </div>
 
       {/* Main Header */}
-      <Header onOpenDeployGuide={() => setIsDeployGuideOpen(true)} />
+      <Header />
 
       {/* Main Content Area */}
       <main className="flex-grow">
@@ -61,13 +54,7 @@ export default function App() {
       </main>
 
       {/* Footer */}
-      <Footer onOpenDeployGuide={() => setIsDeployGuideOpen(true)} />
-
-      {/* Deployment & Custom Domain Guide Modal */}
-      <DeploymentGuideModal
-        isOpen={isDeployGuideOpen}
-        onClose={() => setIsDeployGuideOpen(false)}
-      />
+      <Footer />
 
       {/* Toast Notification */}
       {toastMessage && (

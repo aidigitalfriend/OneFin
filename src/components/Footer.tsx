@@ -1,12 +1,8 @@
 import React from 'react';
-import { Layers, ShieldCheck, ExternalLink, Globe } from 'lucide-react';
+import { Layers, ShieldCheck, ExternalLink } from 'lucide-react';
 import { PORTALS } from '../data/portals.ts';
 
-interface FooterProps {
-  onOpenDeployGuide: () => void;
-}
-
-export const Footer: React.FC<FooterProps> = ({ onOpenDeployGuide }) => {
+export const Footer: React.FC = () => {
   return (
     <footer className="bg-slate-950 border-t border-slate-800 text-slate-400 text-xs">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 lg:py-16">
@@ -33,16 +29,6 @@ export const Footer: React.FC<FooterProps> = ({ onOpenDeployGuide }) => {
                   Stripe PCI Level 1
                 </span>
               </div>
-            </div>
-
-            <div className="mt-6">
-              <button
-                onClick={onOpenDeployGuide}
-                className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-slate-900 hover:bg-slate-800 text-slate-300 hover:text-white border border-slate-800 transition-colors"
-              >
-                <Globe className="w-3.5 h-3.5 text-sky-400" />
-                <span>GitHub Pages &amp; Domain Guide</span>
-              </button>
             </div>
           </div>
 
