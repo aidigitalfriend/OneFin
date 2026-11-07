@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   ExternalLink,
   Copy,
@@ -10,7 +10,8 @@ import {
   Lock,
   AlertTriangle,
   Filter,
-  RefreshCw
+  RefreshCw,
+  Loader2
 } from 'lucide-react';
 import { PORTALS, PortalItem, PortalStatus } from '../data/portals.ts';
 
@@ -66,10 +67,133 @@ export const PortalStatusBadge: React.FC<PortalStatusBadgeProps> = ({ status, si
   );
 };
 
+const FeaturedPortalSkeleton: React.FC = () => (
+  <div className="mb-14 rounded-2xl bg-gradient-to-br from-slate-900/60 via-slate-900/40 to-slate-950/60 border border-slate-800/80 p-6 sm:p-8 lg:p-10 shadow-2xl relative overflow-hidden animate-pulse">
+    <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start relative z-10">
+      <div className="lg:col-span-8 flex flex-col space-y-4">
+        {/* Top metadata skeleton */}
+        <div className="flex flex-wrap items-center gap-2">
+          <div className="h-4 w-16 bg-slate-800 rounded" />
+          <span className="text-slate-700">·</span>
+          <div className="h-4 w-36 bg-slate-800 rounded" />
+          <span className="text-slate-700">·</span>
+          <div className="h-4 w-28 bg-slate-800 rounded" />
+          <span className="text-slate-700">·</span>
+          <div className="h-5 w-16 bg-emerald-500/10 border border-emerald-500/20 rounded-full" />
+        </div>
+
+        {/* Title skeleton */}
+        <div className="h-8 w-3/4 bg-slate-800 rounded-lg mt-1" />
+
+        {/* Subtitle skeleton */}
+        <div className="h-4 w-1/2 bg-slate-800/70 rounded" />
+
+        {/* Description skeleton */}
+        <div className="space-y-2 pt-2">
+          <div className="h-3.5 w-full bg-slate-800/50 rounded" />
+          <div className="h-3.5 w-5/6 bg-slate-800/50 rounded" />
+        </div>
+
+        {/* Feature checklist skeleton */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-2">
+          {[1, 2, 3, 4].map((i) => (
+            <div key={i} className="flex items-center gap-2.5">
+              <div className="w-4 h-4 rounded bg-slate-800 shrink-0" />
+              <div className="h-3 w-4/5 bg-slate-800/60 rounded" />
+            </div>
+          ))}
+        </div>
+
+        {/* Recommendation box skeleton */}
+        <div className="h-11 w-full bg-slate-950/70 border border-slate-800/60 rounded-xl mt-2" />
+      </div>
+
+      {/* Right side CTA Box skeleton */}
+      <div className="lg:col-span-4 bg-slate-950/90 border border-slate-800/90 rounded-xl p-6 space-y-4">
+        <div className="flex items-center justify-between pb-3 border-b border-slate-800">
+          <div className="h-4 w-24 bg-slate-800 rounded" />
+          <div className="h-4 w-16 bg-slate-800 rounded-full" />
+        </div>
+        <div className="space-y-2 py-3">
+          <div className="h-3 w-2/3 bg-slate-800 rounded" />
+          <div className="h-3 w-full bg-slate-800/50 rounded" />
+          <div className="h-3 w-4/5 bg-slate-800/50 rounded" />
+        </div>
+        <div className="h-12 w-full bg-sky-500/20 border border-sky-500/30 rounded-xl" />
+        <div className="h-9 w-full bg-slate-900 border border-slate-800 rounded-lg" />
+      </div>
+    </div>
+  </div>
+);
+
+const CheckoutCardSkeleton: React.FC = () => (
+  <div className="rounded-2xl bg-slate-900/50 border border-slate-800/80 p-6 sm:p-7 flex flex-col justify-between animate-pulse">
+    <div className="space-y-3.5">
+      {/* Top metadata line */}
+      <div className="flex items-center justify-between">
+        <div className="flex items-center gap-2">
+          <div className="h-4 w-6 bg-slate-800 rounded" />
+          <span className="text-slate-700">·</span>
+          <div className="h-4 w-24 bg-slate-800 rounded" />
+        </div>
+        <div className="h-5 w-16 bg-slate-800 rounded-full" />
+      </div>
+
+      {/* Title & Subtitle */}
+      <div className="h-6 w-4/5 bg-slate-800 rounded-lg mt-1" />
+      <div className="h-4 w-3/5 bg-slate-800/70 rounded" />
+
+      {/* Description lines */}
+      <div className="space-y-2 pt-1">
+        <div className="h-3.5 w-full bg-slate-800/50 rounded" />
+        <div className="h-3.5 w-4/5 bg-slate-800/50 rounded" />
+      </div>
+
+      {/* Features bullet list */}
+      <div className="space-y-2.5 pt-2">
+        {[1, 2, 3].map((f) => (
+          <div key={f} className="flex items-center gap-2">
+            <div className="w-3.5 h-3.5 rounded-full bg-slate-800 shrink-0" />
+            <div className="h-3 w-3/4 bg-slate-800/60 rounded" />
+          </div>
+        ))}
+      </div>
+
+      {/* Scope box */}
+      <div className="h-10 w-full bg-slate-950/60 border border-slate-800/50 rounded-lg mt-2" />
+    </div>
+
+    {/* Bottom action buttons */}
+    <div className="pt-6 mt-4 border-t border-slate-800/60">
+      <div className="h-3 w-36 bg-slate-800/50 rounded mb-4" />
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
+        <div className="h-9 bg-slate-800 rounded-xl" />
+        <div className="h-9 bg-slate-800/60 rounded-xl" />
+      </div>
+    </div>
+  </div>
+);
+
 export const PortalsSection: React.FC<PortalsSectionProps> = ({ onCopyLink, copiedUrl }) => {
+  const [isLoading, setIsLoading] = useState(true);
   const [activeCategoryFilter, setActiveCategoryFilter] = useState<'all' | 'billing' | 'checkout'>('all');
   const [statusFilter, setStatusFilter] = useState<'all' | PortalStatus>('all');
   const [searchQuery, setSearchQuery] = useState('');
+
+  useEffect(() => {
+    // Subtle initialization delay to show skeleton and simulate link verification
+    const timer = setTimeout(() => {
+      setIsLoading(false);
+    }, 450);
+    return () => clearTimeout(timer);
+  }, []);
+
+  const handleRefresh = () => {
+    setIsLoading(true);
+    setTimeout(() => {
+      setIsLoading(false);
+    }, 400);
+  };
 
   const customerPortal = PORTALS.find((p) => p.isCustomerPortal);
   const checkoutPortals = PORTALS.filter((p) => !p.isCustomerPortal);
@@ -120,7 +244,14 @@ export const PortalsSection: React.FC<PortalsSectionProps> = ({ onCopyLink, copi
               <span aria-hidden="true">·</span>
               <span>5 External Access Points</span>
               <span aria-hidden="true">·</span>
-              <span className="text-emerald-400 font-medium">{activeCount} Active</span>
+              {isLoading ? (
+                <span className="inline-flex items-center gap-1.5 text-sky-400 font-medium normal-case">
+                  <Loader2 className="w-3.5 h-3.5 animate-spin text-sky-400" />
+                  <span>Initializing links...</span>
+                </span>
+              ) : (
+                <span className="text-emerald-400 font-medium">{activeCount} Active</span>
+              )}
             </div>
             <h2 className="font-display text-2xl sm:text-3xl lg:text-4xl font-bold tracking-tight text-white">
               Choose Your Billing or Payment Destination
@@ -167,7 +298,7 @@ export const PortalsSection: React.FC<PortalsSectionProps> = ({ onCopyLink, copi
           </div>
         </div>
 
-        {/* Filter bar: Search + Status Badge filters */}
+        {/* Filter bar: Search + Status Badge filters + Refresh */}
         <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-8">
           {/* Search Bar filter */}
           <div className="max-w-md w-full">
@@ -191,7 +322,7 @@ export const PortalsSection: React.FC<PortalsSectionProps> = ({ onCopyLink, copi
             </div>
           </div>
 
-          {/* Quick Status Filter Pill Buttons */}
+          {/* Quick Status Filter Pill Buttons + Refresh */}
           <div className="flex items-center gap-1.5 flex-wrap">
             <span className="text-xs text-slate-400 mr-1 flex items-center gap-1">
               <Filter className="w-3.5 h-3.5 text-slate-500" />
@@ -244,10 +375,47 @@ export const PortalsSection: React.FC<PortalsSectionProps> = ({ onCopyLink, copi
               <span className="w-1.5 h-1.5 rounded-full bg-rose-400" />
               <span>Maintenance ({maintenanceCount})</span>
             </button>
+
+            <button
+              onClick={handleRefresh}
+              title="Re-verify Stripe gateway links"
+              disabled={isLoading}
+              className="inline-flex items-center gap-1 px-2.5 py-1 text-xs rounded-full font-medium text-slate-400 hover:text-white bg-slate-900/80 border border-slate-800 hover:border-slate-700 transition-colors disabled:opacity-50 ml-1"
+            >
+              <RefreshCw className={`w-3 h-3 ${isLoading ? 'animate-spin text-sky-400' : ''}`} />
+              <span>Refresh</span>
+            </button>
           </div>
         </div>
 
-        {/* Featured Section: Portal #01 (Stripe Customer Account & Billing Portal) */}
+        {/* Loading Skeleton View */}
+        {isLoading ? (
+          <div aria-label="Loading portals" className="space-y-2">
+            {(activeCategoryFilter === 'all' || activeCategoryFilter === 'billing') && (
+              <FeaturedPortalSkeleton />
+            )}
+
+            <div className="mb-6">
+              <div className="flex items-center gap-2">
+                <h3 className="font-display text-xl sm:text-2xl font-bold text-white tracking-tight">
+                  Direct Stripe Payment Links
+                </h3>
+                <Loader2 className="w-4 h-4 text-sky-400 animate-spin" />
+              </div>
+              <p className="text-xs sm:text-sm text-slate-400 mt-1">
+                Verifying instant checkout connections directly on Stripe...
+              </p>
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 lg:gap-8">
+              {[1, 2, 3, 4].map((n) => (
+                <CheckoutCardSkeleton key={n} />
+              ))}
+            </div>
+          </div>
+        ) : (
+          <div className="animate-in fade-in duration-300">
+            {/* Featured Section: Portal #01 (Stripe Customer Account & Billing Portal) */}
         {shouldShowCustomerPortal && customerPortal && (
           <div id="billing-portal" className="mb-14 scroll-mt-24">
             <div className="relative rounded-2xl bg-gradient-to-br from-slate-900 via-slate-900/95 to-slate-950 border-2 border-sky-500/30 p-6 sm:p-8 lg:p-10 shadow-2xl overflow-hidden">
@@ -514,8 +682,10 @@ export const PortalsSection: React.FC<PortalsSectionProps> = ({ onCopyLink, copi
               );
             })}
         </div>
+          </div>
+        )}
 
-        {filteredPortals.length === 0 && (
+        {!isLoading && filteredPortals.length === 0 && (
           <div className="text-center py-12 bg-slate-900/40 rounded-2xl border border-slate-800">
             <p className="text-sm text-slate-400">No portals match your current search or status filter.</p>
             <button
