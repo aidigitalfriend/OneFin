@@ -182,6 +182,6 @@ export const FAQS = [
   {
     question: 'How is this site hosted and deployed?',
     answer:
-      'OneFin Solution is hosted statically on GitHub Pages with custom domain onefinsolution.xyz. The repository utilizes automated GitHub Actions for zero-downtime continuous deployment on push to the main branch.'
+      'OneFin Solution is hosted and deployed on Cloudflare Pages with custom domain onefinsolution.xyz. The GitHub repository serves as the source code repository, with Cloudflare providing global edge delivery, DDoS protection, and native serverless Pages Functions for visitor telemetry.'
   }
 ];

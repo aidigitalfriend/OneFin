@@ -1,10 +1,10 @@
 # OneFin Solution — Client Payments & Billing Hub
 
-Official centralized landing page for **OneFin Solution**, hosted at **[onefinsolution.xyz](https://onefinsolution.xyz)** via **GitHub Pages**.
+Official centralized landing page for **OneFin Solution**, hosted at **[onefinsolution.xyz](https://onefinsolution.xyz)** via **Cloudflare Pages**.
 
 The sole purpose of this website is to provide customers with convenient, secure access to five official external Stripe payment and billing URLs from one centralized location.
 
-> **Architecture Notice**: This is a static directory website. It is **NOT** a custom payment processing application, authentication platform, customer management system, or backend service. All payment transactions, card tokenization, customer authentication, and tax invoice generation are handled entirely by Stripe.
+> **Architecture Notice**: This is a high-performance static web application with Cloudflare Pages edge functions. It is **NOT** a custom payment processing application, authentication platform, customer management system, or backend service. All payment transactions, card tokenization, customer authentication, and tax invoice generation are handled entirely by Stripe.
 
 ---
 
@@ -39,6 +39,14 @@ All five URLs remain unchanged and redirect directly to Stripe's hosted infrastr
 
 ---
 
+## Visitor Telemetry & Edge Functions
+
+- **Cloudflare Edge Detection**: Native Cloudflare Pages Functions endpoint in `/functions/api/visitor-info.ts` extracts verified visitor IP and geolocation metadata (`cf-connecting-ip`, `request.cf` country, city, region, ISP, and ASN) directly at the edge with zero database storage or tracking.
+- **Client System Telemetry**: Browser-side metrics detect viewport, screen resolution, DPR, color depth, browser engine, operating system, device category, network connection, hardware concurrency, and device memory.
+- **Privacy First**: IP and device telemetry are displayed strictly in the visitor's current browser session and never stored or harvested.
+
+---
+
 ## Security & Customer Authentication
 
 - **Authentication**: When a customer clicks the Customer Billing Portal, they are redirected to Stripe's hosted login page. The customer enters their registered email, and Stripe delivers a one-time verification magic link directly.
@@ -47,17 +55,20 @@ All five URLs remain unchanged and redirect directly to Stripe's hosted infrastr
 
 ---
 
-## Deployment to GitHub Pages (`onefinsolution.xyz`)
+## Deployment to Cloudflare Pages (`onefinsolution.xyz`)
 
-1. **Automated CI/CD**: Pushing to the `main` branch triggers `.github/workflows/deploy.yml` which builds the static bundle and deploys it to GitHub Pages.
-2. **Custom Domain**: A static `CNAME` file is located in `/public/CNAME` containing `onefinsolution.xyz`.
-3. **DNS Setup**:
-   - 4 Apex `A` Records pointing `@` to GitHub Pages IPs:
-     - `185.199.108.153`
-     - `185.199.109.153`
-     - `185.199.110.153`
-     - `185.199.111.153`
-   - `CNAME` record pointing `www` to `[your-github-username].github.io`.
+The website is hosted on **Cloudflare Pages** with GitHub as the source repository:
+
+1. **Build Settings in Cloudflare Pages**:
+   - **Framework Preset**: `Vite`
+   - **Build Command**: `npm run build`
+   - **Build Output Directory**: `dist`
+   - **Root Directory**: `/`
+2. **Serverless Edge Functions**:
+   - Cloudflare Pages automatically detects and mounts `/functions/api/visitor-info.ts` as an edge API route at `/api/visitor-info`.
+3. **Custom Domain**:
+   - Primary domain: `onefinsolution.xyz`
+   - Configured in Cloudflare DNS with Cloudflare proxy and edge SSL/TLS encryption.
 
 ---
 
@@ -67,10 +78,10 @@ All five URLs remain unchanged and redirect directly to Stripe's hosted infrastr
 # Install dependencies
 npm install
 
-# Run Vite dev server
+# Run Vite dev server (includes dev visitor-info API plugin)
 npm run dev
 
-# Compile production bundle for GitHub Pages
+# Compile production bundle for Cloudflare Pages
 npm run build
 
 # Run TypeScript type check

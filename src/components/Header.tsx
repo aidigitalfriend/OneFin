@@ -1,7 +1,21 @@
 import React, { useState } from 'react';
-import { Layers, Menu, X } from 'lucide-react';
+import { Layers, Menu, X, Activity } from 'lucide-react';
+import { VisitorTelemetry } from '../services/visitorInfo.ts';
+import { VisitorIpBadge } from './VisitorIpBadge.tsx';
 
-export const Header: React.FC = () => {
+interface HeaderProps {
+  telemetry: VisitorTelemetry | null;
+  isLoading: boolean;
+  onRefreshIp: () => void;
+  onOpenBrowserInfo: () => void;
+}
+
+export const Header: React.FC<HeaderProps> = ({
+  telemetry,
+  isLoading,
+  onRefreshIp,
+  onOpenBrowserInfo
+}) => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   const navLinks = [
@@ -14,11 +28,11 @@ export const Header: React.FC = () => {
   ];
 
   return (
-    <header className="sticky top-0 z-40 w-full border-b border-slate-800/80 bg-slate-950/90 backdrop-blur-md">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between gap-4">
+    <header className="sticky top-0 z-40 w-full border-b border-slate-800/80 bg-slate-950/85 backdrop-blur-xl">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between gap-3 sm:gap-4">
         {/* Brand wordmark */}
         <a href="#" className="flex items-center gap-2.5 whitespace-nowrap shrink-0 group">
-          <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-sky-400 to-blue-600 flex items-center justify-center text-slate-950 font-bold shadow-sm shadow-sky-500/20 group-hover:scale-105 transition-transform">
+          <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-sky-400 via-blue-500 to-indigo-600 flex items-center justify-center text-slate-950 font-bold shadow-md shadow-sky-500/20 group-hover:scale-105 transition-transform">
             <Layers className="w-4 h-4 text-slate-950 stroke-[2.5]" />
           </div>
           <span className="font-display font-bold text-base sm:text-lg tracking-tight text-white">
@@ -26,8 +40,8 @@ export const Header: React.FC = () => {
           </span>
         </a>
 
-        {/* Desktop Navigation Links — fits properly without overflow or right-side bloating */}
-        <nav className="hidden md:flex items-center gap-6 lg:gap-8 text-xs lg:text-sm font-medium text-slate-300">
+        {/* Desktop Navigation Links */}
+        <nav className="hidden lg:flex items-center gap-5 xl:gap-7 text-xs lg:text-sm font-medium text-slate-300">
           {navLinks.map((link) => (
             <a
               key={link.label}
@@ -39,16 +53,26 @@ export const Header: React.FC = () => {
           ))}
         </nav>
 
-        {/* Mobile menu toggle button */}
-        <button
-          type="button"
-          onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-          className="md:hidden inline-flex items-center justify-center p-2 rounded-lg text-slate-400 hover:text-white hover:bg-slate-900 border border-slate-800 transition-colors"
-          aria-expanded={mobileMenuOpen}
-          aria-label="Toggle navigation menu"
-        >
-          {mobileMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
-        </button>
+        {/* Right Section: Visitor IP Badge & Mobile Hamburger */}
+        <div className="flex items-center gap-2 sm:gap-3 shrink-0">
+          <VisitorIpBadge
+            telemetry={telemetry}
+            isLoading={isLoading}
+            onRefresh={onRefreshIp}
+            onOpenDetails={onOpenBrowserInfo}
+          />
+
+          {/* Mobile menu toggle button */}
+          <button
+            type="button"
+            onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+            className="lg:hidden inline-flex items-center justify-center p-2 rounded-xl text-slate-400 hover:text-white hover:bg-slate-900 border border-slate-800 transition-colors"
+            aria-expanded={mobileMenuOpen}
+            aria-label="Toggle navigation menu"
+          >
+            {mobileMenuOpen ? <X className="w-4 h-4" /> : <Menu className="w-4 h-4" />}
+          </button>
+        </div>
       </div>
 
       {/* Mobile Navigation Dropdown */}
