@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { Header } from './components/Header.tsx';
 import { Hero } from './components/Hero.tsx';
+import { CheckoutSection } from './components/CheckoutSection.tsx';
+import { CheckoutPreviewPage } from './components/CheckoutPreviewPage.tsx';
 import { PortalsSection } from './components/PortalsSection.tsx';
 import { SecuritySection } from './components/SecuritySection.tsx';
 import { FaqSection } from './components/FaqSection.tsx';
@@ -11,6 +13,15 @@ import { detectVisitorTelemetry, VisitorTelemetry } from './services/visitorInfo
 import { Check, ShieldCheck, Activity } from 'lucide-react';
 
 export default function App() {
+  const pathname = window.location.pathname.replace(/\/+$/, '') || '/';
+  if (pathname === '/checkout' || pathname === '/checkout/success' || pathname === '/checkout/cancel') {
+    const status = pathname === '/checkout/success' ? 'returned' : pathname === '/checkout/cancel' ? 'canceled' : undefined;
+    return <CheckoutPreviewPage status={status} />;
+  }
+  return <Hub />;
+}
+
+function Hub() {
   const [copiedUrl, setCopiedUrl] = useState<string | null>(null);
   const [toastMessage, setToastMessage] = useState<string | null>(null);
   const [telemetry, setTelemetry] = useState<VisitorTelemetry | null>(null);
@@ -90,6 +101,7 @@ export default function App() {
           telemetry={telemetry}
           onOpenBrowserInfo={() => setIsBrowserModalOpen(true)}
         />
+        <CheckoutSection />
         <PortalsSection onCopyLink={handleCopyLink} copiedUrl={copiedUrl} />
         <SecuritySection />
         <FaqSection />
