@@ -2,9 +2,9 @@
 
 Official centralized landing page for **OneFin Solution**, hosted at **[onefinsolution.xyz](https://onefinsolution.xyz)** via **Cloudflare**.
 
-The website provides customers with convenient, secure access to five official external Stripe payment and billing URLs and a hosted checkout section.
+The website provides customers with convenient, secure access to five official external Stripe payment and billing URLs and an embedded subscription checkout section that loads products and recurring prices automatically from Stripe's catalog.
 
-> **Checkout setup**: The verified live deployment uses Cloudflare Workers Builds (`onefin`). The new [Worker](worker.ts) creates Stripe-hosted Checkout Sessions and serves the static frontend using [wrangler.jsonc](wrangler.jsonc). All remaining checkout configuration, testing, and deployment steps are tracked in [STRIPE_INTEGRATION_TODO.md](STRIPE_INTEGRATION_TODO.md). Card details are entered on Stripe.
+> **Checkout setup**: The verified live deployment uses Cloudflare Workers Builds (`onefin`). The [Worker](worker.ts) creates Checkout Sessions in `form` mode and serves the static frontend using [wrangler.jsonc](wrangler.jsonc). Stripe's embedded iframe collects payment details on the checkout page. All remaining checkout configuration, testing, and deployment steps are tracked in [STRIPE_INTEGRATION_TODO.md](STRIPE_INTEGRATION_TODO.md).
 
 ---
 

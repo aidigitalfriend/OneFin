@@ -29,14 +29,14 @@ export const CheckoutPreviewPage: React.FC<CheckoutPreviewPageProps> = ({ status
           {status === 'returned' ? 'Back from Stripe' : 'Your subscription checkout'}
         </h1>
         <p className="mt-4 text-base leading-relaxed text-slate-300">
-          Review your OneFin subscription on Stripe, including the price and billing frequency, before you confirm.
+          Review your OneFin subscription, including the price and billing frequency, in the secure Stripe form below before you confirm.
         </p>
       </div>
       <CheckoutSection status={status} showPreviewLink={false} paymentLinksHref="/#checkout-links" />
       <div className="px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 text-sm text-slate-400">
         <p className="inline-flex items-center gap-2">
           <ShieldCheck className="h-4 w-4 shrink-0 text-sky-400" aria-hidden="true" />
-          Payment details are entered securely on Stripe.
+          Payment details are entered securely in Stripe's payment form.
         </p>
         <a href="mailto:support@onefinsolution.xyz" className="text-sky-400 hover:text-sky-300 underline underline-offset-4">
           support@onefinsolution.xyz
